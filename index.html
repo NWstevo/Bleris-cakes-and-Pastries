@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bleris Cakes and Pastries</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="page-blur page-blur-left" aria-hidden="true"></div>
+    <div class="page-blur page-blur-right" aria-hidden="true"></div>
+
+    <nav>
+        <div class="container nav-shell">
+            <a href="#home" class="logo">
+                <span class="logo-mark">B</span>
+                <span class="logo-text">
+                    <strong>Bleris</strong>
+                    <span>Cakes and Pastries</span>
+                </span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#products">Catalogue</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">Our Story</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="cart-icon" id="cartIcon" aria-label="Open cart" tabindex="0">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count">0</span>
+                </li>
+            </ul>
+
+            <button class="menu-toggle" type="button" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div class="overlay" id="overlay"></div>
+
+    <main>
+        <section id="home" class="hero-section">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero-stage" aria-hidden="true">
+                        <div class="hero-slide hero-slide-1">
+                            <img src="cake8.jpeg" alt="">
+                        </div>
+                        <div class="hero-slide hero-slide-2">
+                            <img src="pastries.jpeg" alt="">
+                        </div>
+                        <div class="hero-slide hero-slide-3">
+                            <img src="boquet3.jpeg" alt="">
+                        </div>
+                        <div class="hero-slide hero-slide-4">
+                            <img src="cake12.jpeg" alt="">
+                        </div>
+                        <div class="hero-stage-wash"></div>
+                    </div>
+
+                    <div class="hero-content">
+                        <p class="hero-eyebrow">Hand-finished cakes, pastries, and sweet tables</p>
+                        <h1>Soft, celebratory bakes with a playful bakery feel.</h1>
+                        <p>From birthday centerpieces to pastry boxes for brunch, Bleris creates handmade desserts that feel polished, colourful, and made for gathering.</p>
+
+                        <div class="hero-actions">
+                            <a href="#products" class="btn">Browse the catalogue</a>
+                            <a href="#contact" class="btn btn-secondary">Plan an order</a>
+                        </div>
+
+                        <div class="hero-notes">
+                            <div>
+                                <strong>Open for orders</strong>
+                                <span>Monday to Saturday, 8am - 7pm</span>
+                            </div>
+                            <div>
+                                <strong>Specialties</strong>
+                                <span>Celebration cakes, pastry boxes, dessert tables</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="feature-ribbon">
+                    <div class="feature-pill">Custom cakes for birthdays, weddings, and gifting</div>
+                    <div class="feature-pill">Fresh pastries baked in small batches</div>
+                    <div class="feature-pill">Sweet table styling for events and celebrations</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="products" class="products-section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-label">Catalogue</p>
+                    <h2 class="catalogue">Cakes and pastries designed to feel festive and generous.</h2>
+                    <p>Inspired by the soft editorial mood of modern boutique bakeries, with your existing product shop preserved so visitors can still add items directly to cart.</p>
+                </div>
+
+                <div class="menu-section">
+                    <div class="products-scroll" id="products-scroll" data-scroll-top="false" data-scroll-bottom="true">
+                        <div class="products-grid" id="products-grid">
+                            <div class="product-card set1">
+                                <div class="product-image"><img src="cake2.jpeg" alt="Chocolate Fudge Cake"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Signature cake</p>
+                                    <h3 class="product-title">Chocolate Fudge Cake</h3>
+                                    <p class="product-copy">Rich chocolate layers finished with a smooth bakery-style frosting.</p>
+                                    <p class="product-price">$20.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Chocolate Fudge Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="1" data-name="Chocolate Fudge Cake" data-price="24.99" data-image="cake2.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set2">
+                                <div class="product-image"><img src="cake3.jpeg" alt="Red Velvet Cake"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Celebration pick</p>
+                                    <h3 class="product-title">Red Velvet Cake</h3>
+                                    <p class="product-copy">Velvety sponge with cream cheese frosting and a soft blush finish.</p>
+                                    <p class="product-price">$28.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Red Velvet Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="2" data-name="Red Velvet Cake" data-price="28.99" data-image="cake3.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set3">
+                                <div class="product-image"><img src="cake4.jpeg" alt="New York Cheesecake"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Bakery classic</p>
+                                    <h3 class="product-title">New York Cheesecake</h3>
+                                    <p class="product-copy">A creamy baked cheesecake with a golden top and buttery base.</p>
+                                    <p class="product-price">$22.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for New York Cheesecake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="3" data-name="New York Cheesecake" data-price="22.99" data-image="cake4.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set1">
+                                <div class="product-image"><img src="cake1.jpeg" alt="Assorted Cupcakes"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Party box</p>
+                                    <h3 class="product-title">Assorted Cupcakes (6)</h3>
+                                    <p class="product-copy">Six decorated cupcakes for birthdays, gifting, and sweet tables.</p>
+                                    <p class="product-price">$18.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Assorted Cupcakes"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="4" data-name="Assorted Cupcakes (6)" data-price="18.99" data-image="cake1.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set2">
+                                <div class="product-image"><img src="cake5.jpeg" alt="French Pastries Assortment"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Pastry box</p>
+                                    <h3 class="product-title">French Pastries Assortment</h3>
+                                    <p class="product-copy">A bakery selection of flaky pastries for brunch tables and gifting.</p>
+                                    <p class="product-price">$26.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for French Pastries Assortment"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="5" data-name="French Pastries Assortment" data-price="26.99" data-image="cake5.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set3">
+                                <div class="product-image"><img src="cake6.jpeg" alt="Fresh Fruit Tart"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Seasonal tart</p>
+                                    <h3 class="product-title">Fresh Fruit Tart</h3>
+                                    <p class="product-copy">Buttery tart shell topped with custard and bright seasonal fruit.</p>
+                                    <p class="product-price">$20.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Fresh Fruit Tart"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="6" data-name="Fresh Fruit Tart" data-price="20.99" data-image="cake6.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set1">
+                                <div class="product-image"><img src="cake7.jpeg" alt="Layered chocolate celebration cake"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Large order</p>
+                                    <h3 class="product-title">Chocolate Celebration Cake</h3>
+                                    <p class="product-copy">Tall layered cake styled for larger gatherings and centerpiece tables.</p>
+                                    <p class="product-price">$54.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Chocolate Celebration Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="7" data-name="Chocolate Celebration Cake" data-price="54.99" data-image="cake7.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set2">
+                                <div class="product-image"><img src="cake10.jpeg" alt="Decorated Red Velvet Cake"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Decorated finish</p>
+                                    <h3 class="product-title">Decorated Red Velvet Cake</h3>
+                                    <p class="product-copy">A brighter version of our red velvet with a more detailed finish.</p>
+                                    <p class="product-price">$32.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Decorated Red Velvet Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="8" data-name="Decorated Red Velvet Cake" data-price="32.99" data-image="cake10.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set3">
+                                <div class="product-image"><img src="cake11.jpeg" alt="Cheesecake selection"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Dessert counter</p>
+                                    <h3 class="product-title">Cheesecake Selection</h3>
+                                    <p class="product-copy">Ideal for mixed dessert tables with a creamy bakery-style texture.</p>
+                                    <p class="product-price">$22.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Cheesecake Selection"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="9" data-name="Cheesecake Selection" data-price="22.99" data-image="cake11.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set1">
+                                <div class="product-image"><img src="cake12.jpeg" alt="Assorted cupcakes with icing"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Mini sweets</p>
+                                    <h3 class="product-title">Assorted Cupcakes Deluxe</h3>
+                                    <p class="product-copy">A brighter cupcake collection for showers, birthdays, and gifting.</p>
+                                    <p class="product-price">$18.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Assorted Cupcakes Deluxe"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="10" data-name="Assorted Cupcakes Deluxe" data-price="18.99" data-image="cake12.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set2">
+                                <div class="product-image"><img src="cake13.jpeg" alt="French pastry assortment"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Morning table</p>
+                                    <h3 class="product-title">French Pastries Assortment</h3>
+                                    <p class="product-copy">Perfect for weekend hosting, office treats, and brunch displays.</p>
+                                    <p class="product-price">$26.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for French Pastries Assortment second item"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="11" data-name="French Pastries Assortment" data-price="26.99" data-image="cake13.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-card set3">
+                                <div class="product-image"><img src="cake14.jpeg" alt="Fruit tart with fresh topping"></div>
+                                <div class="product-info">
+                                    <p class="product-tag">Fresh finish</p>
+                                    <h3 class="product-title">Fresh Fruit Tart</h3>
+                                    <p class="product-copy">A colourful tart that fits the lighter, fruit-forward bakery mood.</p>
+                                    <p class="product-price">$20.99</p>
+                                    <div class="product-actions">
+                                        <select class="quantity-select" aria-label="Select quantity for Fresh Fruit Tart second item"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                                        <button class="btn-add-to-cart" data-id="12" data-name="Fresh Fruit Tart" data-price="20.99" data-image="cake14.jpeg">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="services-section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-label">Services</p>
+                    <h2>Order with the same boutique bakery energy as the reference site.</h2>
+                </div>
+                <div class="service-grid">
+                    <article class="service-card"><span class="service-number">01</span><h3>Custom celebration cakes</h3><p>Designed for birthdays, baby showers, weddings, and milestone events with colour-forward finishes and premium decoration.</p></article>
+                    <article class="service-card"><span class="service-number">02</span><h3>Pastry boxes and dessert drops</h3><p>Curated selections for brunch, office gifting, and intimate gatherings with a polished presentation.</p></article>
+                    <article class="service-card"><span class="service-number">03</span><h3>Sweet tables and event styling</h3><p>Layered cake displays, cupcakes, pastries, and matching florals or bouquet accents for a complete event table.</p></article>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="container about-shell">
+                <div class="about-visual"><img src="boquet1.jpeg" alt="Decorative cake bouquet display"></div>
+                <div class="about-copy">
+                    <p class="section-label">Our story</p>
+                    <h2>Bleris is built around handmade details, warm hosting, and cakes that photograph beautifully.</h2>
+                    <p>Instead of a heavy luxury look, the redesigned theme leans into a lighter bakery atmosphere: cream backgrounds, soft pink and sage accents, editorial type, and more breathing room around your products.</p>
+                    <p>That matches the visual language of cplusbakery.com while still using your own images and keeping your existing add-to-cart flow.</p>
+                    <div class="about-points">
+                        <div><strong>Small-batch baking</strong><span>Fresh cakes and pastries prepared with a handcrafted finish.</span></div>
+                        <div><strong>Visual presentation</strong><span>Styled for gifting, events, and bakery-first branding.</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact-section">
+            <div class="container contact-shell">
+                <div class="contact-card">
+                    <p class="section-label">Contact</p>
+                    <h2>Plan an order, ask for pricing, or reserve an event date.</h2>
+                    <p>Use the details below for direct enquiries, custom cake briefs, and event catering requests.</p>
+                    <div class="contact-list">
+                        <p><i class="fas fa-location-dot"></i> 123 Bakery Street, Sweet City</p>
+                        <p><i class="fas fa-clock"></i> Monday to Saturday: 8:00am - 7:00pm</p>
+                        <p><i class="fas fa-phone"></i> <a href="tel:+1234567890">(123) 456-7890</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:info@bleriscakes.com">info@bleriscakes.com</a></p>
+                    </div>
+                </div>
+                <div class="contact-card contact-card-accent">
+                    <p class="section-label">Ordering notes</p>
+                    <h3>Best for custom requests</h3>
+                    <ul class="order-notes">
+                        <li>Share your event date and expected guest count.</li>
+                        <li>Include inspiration photos or preferred colours.</li>
+                        <li>Order early for weddings and large dessert tables.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h2>Your Cart</h2>
+            <button class="close-cart" id="closeCart" type="button">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems"><p class="empty-cart-message">Your cart is empty</p></div>
+        <div class="cart-total" id="cartTotal">Total: $0.00</div>
+        <div class="checkout-form">
+            <h3>Customer Information</h3>
+            <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" required></div>
+            <div class="form-group"><label for="email">Email</label><input type="email" id="email" required></div>
+            <div class="form-group"><label for="phone">Phone Number</label><input type="tel" id="phone" required></div>
+            <div class="form-group"><label for="address">Delivery Address</label><textarea id="address" rows="3" required></textarea></div>
+            <h3>Payment Method</h3>
+            <div class="payment-options">
+                <div class="payment-option"><input type="radio" id="cash" name="payment" value="cash" checked><label for="cash">Cash on Delivery</label></div>
+                <div class="payment-option"><input type="radio" id="card" name="payment" value="card"><label for="card">Credit/Debit Card</label></div>
+                <div class="payment-option"><input type="radio" id="paypal" name="payment" value="paypal"><label for="paypal">PayPal</label></div>
+            </div>
+            <button class="btn" id="checkoutBtn" type="button">Complete Order</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Bleris Cakes & Pastries</h3>
+                    <p>Handmade celebration cakes, pastries, and dessert tables with a softer boutique bakery mood.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com" target="_blank" rel="noreferrer" class="social-link" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com" target="_blank" rel="noreferrer" class="social-link" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/1234567890" target="_blank" rel="noreferrer" class="social-link" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://tiktok.com" target="_blank" rel="noreferrer" class="social-link" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                        <a href="tel:+1234567890" class="social-link" aria-label="Phone"><i class="fas fa-phone"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Catalogue</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">Our Story</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Store Information</h4>
+                    <div class="store-info">
+                        <p><i class="fas fa-map-marker-alt"></i> 123 Bakery Street, Sweet City</p>
+                        <p><i class="fas fa-clock"></i> Mon-Sat: 8am-7pm</p>
+                        <p><i class="fas fa-phone"></i> <a href="tel:+1234567890">(123) 456-7890</a></p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:info@bleriscakes.com">info@bleriscakes.com</a></p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe for product launches, seasonal boxes, and limited cake slots.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email address" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Bleris Cakes and Pastries. All rights reserved.</p>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                    <i class="fab fa-cc-amex"></i>
+                    <i class="fab fa-cc-paypal"></i>
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+
+</html>
