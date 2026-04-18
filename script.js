@@ -1,4 +1,20 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Dark mode toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+    }
+
+    themeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        const isDark = body.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
     // Cart functionality
     const cart = [];
     const cartIcon = document.getElementById('cartIcon');
@@ -13,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const productsGrid = document.getElementById("products-grid");
 
     // Utility: format money consistently
-    const formatMoney = (n) => n.toFixed(2);
+    const formatMoney = (n) => `${n.toFixed(2)} FCFA`;
 
     // Hint browser to lazy-load product images (perf optimization)
     document.querySelectorAll('.product-image img').forEach(img => {
@@ -184,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     </div>
                     <div class="cart-item-details">
                         <div class="cart-item-title">${item.name}</div>
-                        <div class="cart-item-price">$${formatMoney(item.price)} x ${item.quantity}</div>
+                        <div class="cart-item-price">${formatMoney(item.price)} x ${item.quantity}</div>
                         <div class="cart-item-actions">
                             <input type="number" min="1" value="${item.quantity}" class="item-quantity" data-id="${item.id}" style="width: 60px; padding: 5px;">
                             <button class="remove-item" data-id="${item.id}"><i class="fas fa-trash"></i></button>
@@ -196,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        cartTotal.textContent = `Total: $${formatMoney(total)}`;
+        cartTotal.textContent = `Total: ${formatMoney(total)}`;
     }
 
     // Checkout functionality

@@ -7,7 +7,7 @@
     <title>Bleris Cakes and Pastries</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -35,6 +35,11 @@
                 <li class="cart-icon" id="cartIcon" aria-label="Open cart" tabindex="0">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-count">0</span>
+                </li>
+                <li>
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" tabindex="0">
+                        <i class="fas fa-moon"></i>
+                    </button>
                 </li>
             </ul>
 
@@ -114,7 +119,7 @@
                                     <p class="product-tag">Signature cake</p>
                                     <h3 class="product-title">Chocolate Fudge Cake</h3>
                                     <p class="product-copy">Rich chocolate layers finished with a smooth bakery-style frosting.</p>
-                                    <p class="product-price">$20.99</p>
+                                    <p class="product-price">10,000 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Chocolate Fudge Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="1" data-name="Chocolate Fudge Cake" data-price="24.99" data-image="cake2.jpeg">Add to cart</button>
@@ -128,7 +133,7 @@
                                     <p class="product-tag">Celebration pick</p>
                                     <h3 class="product-title">Red Velvet Cake</h3>
                                     <p class="product-copy">Velvety sponge with cream cheese frosting and a soft blush finish.</p>
-                                    <p class="product-price">$28.99</p>
+                                    <p class="product-price">5,000 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Red Velvet Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="2" data-name="Red Velvet Cake" data-price="28.99" data-image="cake3.jpeg">Add to cart</button>
@@ -142,7 +147,7 @@
                                     <p class="product-tag">Bakery classic</p>
                                     <h3 class="product-title">New York Cheesecake</h3>
                                     <p class="product-copy">A creamy baked cheesecake with a golden top and buttery base.</p>
-                                    <p class="product-price">$22.99</p>
+                                    <p class="product-price">12,500 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for New York Cheesecake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="3" data-name="New York Cheesecake" data-price="22.99" data-image="cake4.jpeg">Add to cart</button>
@@ -156,7 +161,7 @@
                                     <p class="product-tag">Party box</p>
                                     <h3 class="product-title">Assorted Cupcakes (6)</h3>
                                     <p class="product-copy">Six decorated cupcakes for birthdays, gifting, and sweet tables.</p>
-                                    <p class="product-price">$18.99</p>
+                                    <p class="product-price">10,000 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Assorted Cupcakes"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="4" data-name="Assorted Cupcakes (6)" data-price="18.99" data-image="cake1.jpeg">Add to cart</button>
@@ -170,7 +175,7 @@
                                     <p class="product-tag">Pastry box</p>
                                     <h3 class="product-title">French Pastries Assortment</h3>
                                     <p class="product-copy">A bakery selection of flaky pastries for brunch tables and gifting.</p>
-                                    <p class="product-price">$26.99</p>
+                                    <p class="product-price">7,500 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for French Pastries Assortment"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="5" data-name="French Pastries Assortment" data-price="26.99" data-image="cake5.jpeg">Add to cart</button>
@@ -184,7 +189,7 @@
                                     <p class="product-tag">Seasonal tart</p>
                                     <h3 class="product-title">Fresh Fruit Tart</h3>
                                     <p class="product-copy">Buttery tart shell topped with custard and bright seasonal fruit.</p>
-                                    <p class="product-price">$20.99</p>
+                                    <p class="product-price">4,500 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Fresh Fruit Tart"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="6" data-name="Fresh Fruit Tart" data-price="20.99" data-image="cake6.jpeg">Add to cart</button>
@@ -198,7 +203,7 @@
                                     <p class="product-tag">Large order</p>
                                     <h3 class="product-title">Chocolate Celebration Cake</h3>
                                     <p class="product-copy">Tall layered cake styled for larger gatherings and centerpiece tables.</p>
-                                    <p class="product-price">$54.99</p>
+                                    <p class="product-price">5,500 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Chocolate Celebration Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="7" data-name="Chocolate Celebration Cake" data-price="54.99" data-image="cake7.jpeg">Add to cart</button>
@@ -212,7 +217,7 @@
                                     <p class="product-tag">Decorated finish</p>
                                     <h3 class="product-title">Decorated Red Velvet Cake</h3>
                                     <p class="product-copy">A brighter version of our red velvet with a more detailed finish.</p>
-                                    <p class="product-price">$32.99</p>
+                                    <p class="product-price">7,000FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Decorated Red Velvet Cake"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="8" data-name="Decorated Red Velvet Cake" data-price="32.99" data-image="cake10.jpeg">Add to cart</button>
@@ -226,7 +231,7 @@
                                     <p class="product-tag">Dessert counter</p>
                                     <h3 class="product-title">Cheesecake Selection</h3>
                                     <p class="product-copy">Ideal for mixed dessert tables with a creamy bakery-style texture.</p>
-                                    <p class="product-price">$22.99</p>
+                                    <p class="product-price">2,500 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Cheesecake Selection"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="9" data-name="Cheesecake Selection" data-price="22.99" data-image="cake11.jpeg">Add to cart</button>
@@ -240,7 +245,7 @@
                                     <p class="product-tag">Mini sweets</p>
                                     <h3 class="product-title">Assorted Cupcakes Deluxe</h3>
                                     <p class="product-copy">A brighter cupcake collection for showers, birthdays, and gifting.</p>
-                                    <p class="product-price">$18.99</p>
+                                    <p class="product-price">18,000 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Assorted Cupcakes Deluxe"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="10" data-name="Assorted Cupcakes Deluxe" data-price="18.99" data-image="cake12.jpeg">Add to cart</button>
@@ -254,7 +259,7 @@
                                     <p class="product-tag">Morning table</p>
                                     <h3 class="product-title">French Pastries Assortment</h3>
                                     <p class="product-copy">Perfect for weekend hosting, office treats, and brunch displays.</p>
-                                    <p class="product-price">$26.99</p>
+                                    <p class="product-price">15,000 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for French Pastries Assortment second item"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="11" data-name="French Pastries Assortment" data-price="26.99" data-image="cake13.jpeg">Add to cart</button>
@@ -268,7 +273,7 @@
                                     <p class="product-tag">Fresh finish</p>
                                     <h3 class="product-title">Fresh Fruit Tart</h3>
                                     <p class="product-copy">A colourful tart that fits the lighter, fruit-forward bakery mood.</p>
-                                    <p class="product-price">$20.99</p>
+                                    <p class="product-price">10,500 FCFA</p>
                                     <div class="product-actions">
                                         <select class="quantity-select" aria-label="Select quantity for Fresh Fruit Tart second item"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                                         <button class="btn-add-to-cart" data-id="12" data-name="Fresh Fruit Tart" data-price="20.99" data-image="cake14.jpeg">Add to cart</button>
@@ -343,7 +348,7 @@
             <button class="close-cart" id="closeCart" type="button">&times;</button>
         </div>
         <div class="cart-items" id="cartItems"><p class="empty-cart-message">Your cart is empty</p></div>
-        <div class="cart-total" id="cartTotal">Total: $0.00</div>
+        <div class="cart-total" id="cartTotal">Total: 0.00 FCFA</div>
         <div class="checkout-form">
             <h3>Customer Information</h3>
             <div class="form-group"><label for="name">Full Name</label><input type="text" id="name" required></div>
