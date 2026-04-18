@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
     const checkoutBtn = document.getElementById('checkoutBtn');
+    const mobileCardsQuery = window.matchMedia('(max-width: 768px)');
 
     const productsScroll = document.getElementById("products-scroll");
     const productsGrid = document.getElementById("products-grid");
@@ -91,6 +92,156 @@ document.addEventListener("DOMContentLoaded", () => {
         const atBottom = scrollTop >= maxScrollTop - 2;
         productsScroll.dataset.scrollTop = String(!atTop);
         productsScroll.dataset.scrollBottom = String(!atBottom);
+    }
+
+    function initMobileProductCards() {
+        const cards = document.querySelectorAll('.product-card');
+        if (!cards.length) return;
+
+        const lightbox = document.createElement('div');
+        lightbox.className = 'image-lightbox';
+        lightbox.innerHTML = `
+            <button class="lightbox-close" type="button" aria-label="Close image viewer">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="lightbox-viewport">
+                <img src="" alt="">
+            </div>
+            <div class="lightbox-toolbar">
+                <button class="lightbox-control" type="button" data-scale="-0.25" aria-label="Zoom out">-</button>
+                <button class="lightbox-control" type="button" data-reset="true" aria-label="Reset zoom">Reset</button>
+                <button class="lightbox-control" type="button" data-scale="0.25" aria-label="Zoom in">+</button>
+            </div>
+        `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImage = lightbox.querySelector('img');
+        let currentScale = 1;
+
+        function setLightboxScale(nextScale) {
+            currentScale = Math.min(Math.max(nextScale, 1), 3);
+            lightbox.style.setProperty('--lightbox-scale', currentScale);
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('is-open');
+            lightboxImage.src = '';
+            lightboxImage.alt = '';
+            setLightboxScale(1);
+            document.body.style.overflow = '';
+        }
+
+        function openLightbox(src, alt) {
+            lightboxImage.src = src;
+            lightboxImage.alt = alt;
+            lightbox.classList.add('is-open');
+            setLightboxScale(1);
+            document.body.style.overflow = 'hidden';
+        }
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox || e.target.closest('.lightbox-close')) {
+                closeLightbox();
+                return;
+            }
+
+            const control = e.target.closest('.lightbox-control');
+            if (!control) return;
+
+            if (control.dataset.reset) {
+                setLightboxScale(1);
+                return;
+            }
+
+            const delta = parseFloat(control.dataset.scale);
+            if (!Number.isNaN(delta)) {
+                setLightboxScale(currentScale + delta);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('is-open')) {
+                closeLightbox();
+            }
+        });
+
+        function syncMobileCardState() {
+            const isMobile = mobileCardsQuery.matches;
+
+            cards.forEach(card => {
+                const productInfo = card.querySelector('.product-info');
+                const productTitle = card.querySelector('.product-title');
+                const productImage = card.querySelector('.product-image img');
+
+                if (!productInfo || !productTitle || !productImage) return;
+
+                let toggleButton = card.querySelector('.mobile-card-toggle');
+                if (!toggleButton) {
+                    toggleButton = document.createElement('button');
+                    toggleButton.type = 'button';
+                    toggleButton.className = 'mobile-card-toggle';
+                    productInfo.appendChild(toggleButton);
+                }
+
+                let zoomButton = card.querySelector('.product-image-zoom');
+                if (!zoomButton) {
+                    zoomButton = document.createElement('button');
+                    zoomButton.type = 'button';
+                    zoomButton.className = 'product-image-zoom';
+                    zoomButton.setAttribute('aria-label', `Zoom image for ${productTitle.textContent}`);
+                    zoomButton.innerHTML = '<i class="fas fa-search-plus"></i>';
+                    card.querySelector('.product-image')?.appendChild(zoomButton);
+                }
+
+                if (!isMobile) {
+                    card.classList.remove('mobile-card-collapsed', 'is-expanded');
+                    toggleButton.textContent = 'More';
+                    return;
+                }
+
+                const isExpanded = card.classList.contains('is-expanded');
+                card.classList.toggle('mobile-card-collapsed', !isExpanded);
+                toggleButton.textContent = isExpanded ? 'Show less' : 'More';
+            });
+        }
+
+        cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                const toggleButton = e.target.closest('.mobile-card-toggle');
+                if (toggleButton) {
+                    e.preventDefault();
+                    const shouldExpand = !card.classList.contains('is-expanded');
+                    cards.forEach(otherCard => {
+                        if (otherCard !== card) {
+                            otherCard.classList.remove('is-expanded');
+                        }
+                    });
+                    card.classList.toggle('is-expanded', shouldExpand);
+                    syncMobileCardState();
+                    if (shouldExpand) {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                    return;
+                }
+
+                const zoomButton = e.target.closest('.product-image-zoom');
+                if (zoomButton) {
+                    e.preventDefault();
+                    const image = card.querySelector('.product-image img');
+                    if (image) {
+                        openLightbox(image.src, image.alt);
+                    }
+                }
+            });
+        });
+
+        if (typeof mobileCardsQuery.addEventListener === 'function') {
+            mobileCardsQuery.addEventListener('change', syncMobileCardState);
+        } else if (typeof mobileCardsQuery.addListener === 'function') {
+            mobileCardsQuery.addListener(syncMobileCardState);
+        }
+
+        syncMobileCardState();
     }
 
     // Scroll reveal animations using IntersectionObserver
@@ -277,6 +428,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     initRevealAnimations();
     applyFlip(productsGrid);
+    initMobileProductCards();
 
     if (productsScroll) {
         updateProductsScrollFade();

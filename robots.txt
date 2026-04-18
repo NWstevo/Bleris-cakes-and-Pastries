@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nwstevo.github.io/Bleris-cakes-and-Pastries/sitemap.xml
