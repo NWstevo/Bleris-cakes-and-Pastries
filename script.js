@@ -94,10 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
         productsScroll.dataset.scrollBottom = String(!atBottom);
     }
 
-    function initMobileProductCards() {
-        const cards = document.querySelectorAll('.product-card');
-        if (!cards.length) return;
-
+    function createImageLightbox() {
         const lightbox = document.createElement('div');
         lightbox.className = 'image-lightbox';
         lightbox.innerHTML = `
@@ -108,26 +105,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 <img src="" alt="">
             </div>
             <div class="lightbox-toolbar">
-                <button class="lightbox-control" type="button" data-scale="-0.25" aria-label="Zoom out">-</button>
-                <button class="lightbox-control" type="button" data-reset="true" aria-label="Reset zoom">Reset</button>
-                <button class="lightbox-control" type="button" data-scale="0.25" aria-label="Zoom in">+</button>
+                <button class="lightbox-control lightbox-display" type="button" aria-label="View full image">View</button>
             </div>
         `;
         document.body.appendChild(lightbox);
 
         const lightboxImage = lightbox.querySelector('img');
-        let currentScale = 1;
-
-        function setLightboxScale(nextScale) {
-            currentScale = Math.min(Math.max(nextScale, 1), 3);
-            lightbox.style.setProperty('--lightbox-scale', currentScale);
-        }
 
         function closeLightbox() {
             lightbox.classList.remove('is-open');
             lightboxImage.src = '';
             lightboxImage.alt = '';
-            setLightboxScale(1);
             document.body.style.overflow = '';
         }
 
@@ -135,28 +123,22 @@ document.addEventListener("DOMContentLoaded", () => {
             lightboxImage.src = src;
             lightboxImage.alt = alt;
             lightbox.classList.add('is-open');
-            setLightboxScale(1);
             document.body.style.overflow = 'hidden';
         }
 
         lightbox.addEventListener('click', (e) => {
-            if (e.target === lightbox || e.target.closest('.lightbox-close')) {
+            if (e.target.closest('.lightbox-close')) {
                 closeLightbox();
                 return;
             }
 
             const control = e.target.closest('.lightbox-control');
-            if (!control) return;
-
-            if (control.dataset.reset) {
-                setLightboxScale(1);
+            if (control) {
+                closeLightbox();
                 return;
             }
 
-            const delta = parseFloat(control.dataset.scale);
-            if (!Number.isNaN(delta)) {
-                setLightboxScale(currentScale + delta);
-            }
+            closeLightbox();
         });
 
         document.addEventListener('keydown', (e) => {
@@ -164,6 +146,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 closeLightbox();
             }
         });
+
+        return { openLightbox, closeLightbox, lightbox };
+    }
+
+    const { openLightbox } = createImageLightbox();
+
+    function initMobileProductCards() {
+        const cards = document.querySelectorAll('.product-card');
+        if (!cards.length) return;
 
         function syncMobileCardState() {
             const isMobile = mobileCardsQuery.matches;
@@ -188,9 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     zoomButton = document.createElement('button');
                     zoomButton.type = 'button';
                     zoomButton.className = 'product-image-zoom';
-                    zoomButton.setAttribute('aria-label', `Zoom image for ${productTitle.textContent}`);
-                    zoomButton.innerHTML = '<i class="fas fa-search-plus"></i>';
-                    card.querySelector('.product-image')?.appendChild(zoomButton);
+                    zoomButton.setAttribute('aria-label', `View image for ${productTitle.textContent}`);
+                    zoomButton.textContent = 'View';
+                    card.appendChild(zoomButton);
                 }
 
                 if (!isMobile) {
@@ -231,6 +222,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (image) {
                         openLightbox(image.src, image.alt);
                     }
+                    return;
+                }
+
+                const clickedProductImage = e.target.closest('.product-image');
+                if (clickedProductImage) {
+                    const image = card.querySelector('.product-image img');
+                    if (image) {
+                        openLightbox(image.src, image.alt);
+                    }
                 }
             });
         });
@@ -242,6 +242,53 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         syncMobileCardState();
+    }
+
+    function initCatalogueShots() {
+        const shots = document.querySelectorAll('.catalogue-shot');
+        if (!shots.length) return;
+
+        shots.forEach(shot => {
+            const image = shot.querySelector('img');
+            if (!image) return;
+
+            shot.addEventListener('mouseenter', () => {
+                shot.classList.add('is-active');
+            });
+
+            shot.addEventListener('mouseleave', () => {
+                shot.classList.remove('is-active');
+            });
+
+            shot.addEventListener('focus', () => {
+                shot.classList.add('is-active');
+            });
+
+            shot.addEventListener('blur', () => {
+                shot.classList.remove('is-active');
+            });
+
+            shot.addEventListener('click', (e) => {
+                const displayButton = e.target.closest('.product-image-zoom');
+                if (displayButton) {
+                    openLightbox(image.src, image.alt);
+                    return;
+                }
+
+                const interactiveTarget = e.target.closest('button, select, option');
+                if (interactiveTarget) {
+                    return;
+                }
+                openLightbox(image.src, image.alt);
+            });
+
+            shot.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openLightbox(image.src, image.alt);
+                }
+            });
+        });
     }
 
     // Scroll reveal animations using IntersectionObserver
@@ -429,6 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initRevealAnimations();
     applyFlip(productsGrid);
     initMobileProductCards();
+    initCatalogueShots();
 
     if (productsScroll) {
         updateProductsScrollFade();
