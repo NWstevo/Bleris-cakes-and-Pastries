@@ -24,13 +24,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
     const checkoutBtn = document.getElementById('checkoutBtn');
+    const addSelectedServicesBtn = document.getElementById('addSelectedServices');
+    const contactPhoneLink = document.querySelector('.contact-list a[href^="tel:"]');
     const mobileCardsQuery = window.matchMedia('(max-width: 768px)');
 
     const productsScroll = document.getElementById("products-scroll");
     const productsGrid = document.getElementById("products-grid");
 
-    // Utility: format money consistently
-    const formatMoney = (n) => `${n.toFixed(2)} FCFA`;
+    // Utility: format money consistently in whole FCFA values
+    const formatMoney = (n) => `${new Intl.NumberFormat('en-US', {
+        maximumFractionDigits: 0
+    }).format(n)} FCFA`;
 
     // Hint browser to lazy-load product images (perf optimization)
     document.querySelectorAll('.product-image img').forEach(img => {
@@ -351,6 +355,24 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = 'auto';
     }
 
+    function addItemToCart({ id, name, price, image, quantity }) {
+        const existingItem = cart.find(item => item.id === id);
+
+        if (existingItem) {
+            existingItem.quantity += quantity;
+        } else {
+            cart.push({
+                id,
+                name,
+                price,
+                image,
+                quantity
+            });
+        }
+
+        updateCart();
+    }
+
     // Add to cart functionality
     const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
     addToCartButtons.forEach(button => {
@@ -360,25 +382,67 @@ document.addEventListener("DOMContentLoaded", () => {
             const price = parseFloat(button.getAttribute('data-price'));
             const image = button.getAttribute('data-image');
             const quantity = parseInt(button.parentElement.querySelector('.quantity-select').value, 10);
-
-            const existingItem = cart.find(item => item.id === id);
-
-            if (existingItem) {
-                existingItem.quantity += quantity;
-            } else {
-                cart.push({
-                    id,
-                    name,
-                    price,
-                    image,
-                    quantity
-                });
-            }
-
-            updateCart();
+            addItemToCart({ id, name, price, image, quantity });
             alert(`${quantity} ${name}(s) added to cart!`);
         });
     });
+
+    if (addSelectedServicesBtn) {
+        addSelectedServicesBtn.addEventListener('click', () => {
+            const selectedOptions = Array.from(document.querySelectorAll('.service-option input[type="checkbox"]:checked'));
+
+            if (!selectedOptions.length) {
+                alert('Select at least one service item first.');
+                return;
+            }
+
+            let addedCount = 0;
+
+            selectedOptions.forEach((checkbox) => {
+                const option = checkbox.closest('.service-option');
+                const priceSelect = option ? option.querySelector('.service-option-price') : null;
+                const baseId = checkbox.getAttribute('data-id');
+                const baseName = checkbox.getAttribute('data-name');
+                let id = baseId;
+                let name = baseName;
+                let price = parseFloat(checkbox.getAttribute('data-price'));
+
+                if (priceSelect) {
+                    const selectedChoice = priceSelect.options[priceSelect.selectedIndex];
+                    const selectedValue = priceSelect.value;
+                    const selectedLabel = selectedChoice && selectedChoice.dataset.label
+                        ? selectedChoice.dataset.label
+                        : `${selectedValue} FCFA`;
+
+                    id = `${baseId}-${selectedValue}`;
+                    name = `${baseName} (${selectedLabel})`;
+                    price = parseFloat(selectedValue);
+                }
+
+                if (Number.isNaN(price)) {
+                    return;
+                }
+
+                addItemToCart({
+                    id,
+                    name,
+                    price,
+                    image: '',
+                    quantity: 1
+                });
+
+                checkbox.checked = false;
+                addedCount += 1;
+            });
+
+            if (!addedCount) {
+                alert('The selected services could not be added to cart.');
+                return;
+            }
+
+            alert(`${addedCount} selected service item(s) added to cart!`);
+        });
+    }
 
     // Update cart display (build once, minimal DOM writes)
     function updateCart() {
@@ -391,10 +455,13 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             let html = '';
             cart.forEach(item => {
+                const itemImageMarkup = item.image
+                    ? `<img src="${item.image}" alt="${item.name}">`
+                    : `<div class="cart-item-service-logo" aria-label="Service logo">Service</div>`;
                 html += `
                 <div class="cart-item">
                     <div class="cart-item-image">
-                        <img src="${item.image}" alt="${item.name}">
+                        ${itemImageMarkup}
                     </div>
                     <div class="cart-item-details">
                         <div class="cart-item-title">${item.name}</div>
@@ -424,22 +491,44 @@ document.addEventListener("DOMContentLoaded", () => {
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
+        const paymentMethod = document.querySelector('input[name="payment"]:checked');
 
         if (!name || !email || !phone || !address) {
             alert('Please fill in all customer information fields!');
             return;
         }
 
-        alert('Order placed successfully! Thank you for your purchase.');
+        const businessPhone = (contactPhoneLink ? contactPhoneLink.getAttribute('href') : 'tel:+237653364537')
+            .replace('tel:', '')
+            .replace(/\D/g, '');
 
-        cart.length = 0;
-        updateCart();
-        closeCartSidebar();
+        const paymentLabel = paymentMethod
+            ? paymentMethod.parentElement.querySelector('label').textContent
+            : 'Not specified';
 
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('phone').value = '';
-        document.getElementById('address').value = '';
+        const itemLines = cart.map((item) => (
+            `- ${item.name} x ${item.quantity} = ${formatMoney(item.price * item.quantity)}`
+        ));
+
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        const message = [
+            'Hello Bleris Cakes and Pastries, I would like to place an order.',
+            '',
+            'Order items:',
+            ...itemLines,
+            '',
+            `Total: ${formatMoney(total)}`,
+            '',
+            'Customer details:',
+            `Name: ${name}`,
+            `Email: ${email}`,
+            `Phone: ${phone}`,
+            `Address: ${address}`,
+            `Payment method: ${paymentLabel}`
+        ].join('\n');
+
+        const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodeURIComponent(message)}`;
+        window.open(whatsappUrl, '_blank', 'noopener');
     });
 
     // Mobile menu toggle
