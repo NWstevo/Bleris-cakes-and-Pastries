@@ -3,17 +3,36 @@ document.addEventListener("DOMContentLoaded", () => {
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
 
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        body.classList.add('dark-mode');
+    if (themeToggle) {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
     }
 
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        const isDark = body.classList.contains('dark-mode');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
+    const consentBanner = document.getElementById('consentBanner');
+    const consentButtons = document.querySelectorAll('.consent-btn');
+
+    if (consentBanner) {
+        const storedConsent = localStorage.getItem('bleris-consent');
+        if (storedConsent) {
+            consentBanner.classList.add('is-hidden');
+        }
+
+        consentButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const choice = button.getAttribute('data-consent') || 'essential';
+                localStorage.setItem('bleris-consent', choice);
+                consentBanner.classList.add('is-hidden');
+            });
+        });
+    }
 
     // Cart functionality
     const cart = [];
@@ -27,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const addSelectedServicesBtn = document.getElementById('addSelectedServices');
     const contactPhoneLink = document.querySelector('.contact-list a[href^="tel:"]');
     const mobileCardsQuery = window.matchMedia('(max-width: 768px)');
+    const hasCartUi = Boolean(cartIcon && cartSidebar && closeCart && overlay && cartItems);
 
     const productsScroll = document.getElementById("products-scroll");
     const productsGrid = document.getElementById("products-grid");
@@ -481,55 +501,57 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Checkout functionality
-    checkoutBtn.addEventListener('click', () => {
-        if (cart.length === 0) {
-            alert('Your cart is empty!');
-            return;
-        }
+    if (checkoutBtn) {
+        checkoutBtn.addEventListener('click', () => {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
 
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
 
-        if (!name || !email || !phone || !address) {
-            alert('Please fill in all customer information fields!');
-            return;
-        }
+            if (!name || !email || !phone || !address) {
+                alert('Please fill in all customer information fields!');
+                return;
+            }
 
-        const businessPhone = (contactPhoneLink ? contactPhoneLink.getAttribute('href') : 'tel:+237653364537')
-            .replace('tel:', '')
-            .replace(/\D/g, '');
+            const businessPhone = (contactPhoneLink ? contactPhoneLink.getAttribute('href') : 'tel:+237653364537')
+                .replace('tel:', '')
+                .replace(/\D/g, '');
 
-        const paymentLabel = paymentMethod
-            ? paymentMethod.parentElement.querySelector('label').textContent
-            : 'Not specified';
+            const paymentLabel = paymentMethod
+                ? paymentMethod.parentElement.querySelector('label').textContent
+                : 'Not specified';
 
-        const itemLines = cart.map((item) => (
-            `- ${item.name} x ${item.quantity} = ${formatMoney(item.price * item.quantity)}`
-        ));
+            const itemLines = cart.map((item) => (
+                `- ${item.name} x ${item.quantity} = ${formatMoney(item.price * item.quantity)}`
+            ));
 
-        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        const message = [
-            'Hello Bleris Cakes and Pastries, I would like to place an order.',
-            '',
-            'Order items:',
-            ...itemLines,
-            '',
-            `Total: ${formatMoney(total)}`,
-            '',
-            'Customer details:',
-            `Name: ${name}`,
-            `Email: ${email}`,
-            `Phone: ${phone}`,
-            `Address: ${address}`,
-            `Payment method: ${paymentLabel}`
-        ].join('\n');
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const message = [
+                'Hello Bleris Cakes and Pastries, I would like to place an order.',
+                '',
+                'Order items:',
+                ...itemLines,
+                '',
+                `Total: ${formatMoney(total)}`,
+                '',
+                'Customer details:',
+                `Name: ${name}`,
+                `Email: ${email}`,
+                `Phone: ${phone}`,
+                `Address: ${address}`,
+                `Payment method: ${paymentLabel}`
+            ].join('\n');
 
-        const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank', 'noopener');
-    });
+            const whatsappUrl = `https://wa.me/${businessPhone}?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank', 'noopener');
+        });
+    }
 
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');

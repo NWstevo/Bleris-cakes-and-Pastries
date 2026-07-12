@@ -9,6 +9,9 @@
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="Bleris Cakes and Pastries">
     <meta name="theme-color" content="#08111f">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Permissions-Policy" content="geolocation=(), microphone=(), camera=()">
     <link rel="canonical" href="https://bleris.netlify.app/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Bleris Cakes and Pastries | Custom Cakes and Pastries in Kumba">
@@ -111,6 +114,16 @@
     </nav>
 
     <div class="overlay" id="overlay"></div>
+
+    <div class="consent-banner" id="consentBanner" role="dialog" aria-live="polite" aria-label="Cookie preferences">
+        <div class="container consent-banner-inner">
+            <p>We use cookies and local preferences to keep your cart, theme choice, and checkout experience working smoothly. Review our <a href="legal/privacy-policy.html">Privacy Policy</a>, <a href="legal/cookie-policy.html">Cookie Policy</a>, and <a href="legal/terms-and-conditions.html">Terms &amp; Conditions</a>.</p>
+            <div class="consent-actions">
+                <button class="btn btn-secondary consent-btn" type="button" data-consent="essential">Essential only</button>
+                <button class="btn consent-btn" type="button" data-consent="accept">Accept all</button>
+            </div>
+        </div>
+    </div>
 
     <main>
         <section id="home" class="hero-section">
@@ -916,6 +929,14 @@
                         <li><a href="#services">Services</a></li>
                         <li><a href="#about">Our Story</a></li>
                         <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="legal/privacy-policy.html">Privacy Policy</a></li>
+                        <li><a href="legal/cookie-policy.html">Cookie Policy</a></li>
+                        <li><a href="legal/terms-and-conditions.html">Terms &amp; Conditions</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
