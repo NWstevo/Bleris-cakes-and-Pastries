@@ -75,6 +75,7 @@
                 <form id="productForm" class="admin-form admin-product-form" hidden>
                     <h2 id="formTitle">Add new item</h2>
                     <input type="hidden" id="productId">
+                    <input type="hidden" id="productMediaType" value="image">
                     <div class="form-group">
                         <label for="productName">Name</label>
                         <input type="text" id="productName" required>
@@ -84,8 +85,14 @@
                         <input type="number" id="productPrice" min="0" step="1" required>
                     </div>
                     <div class="form-group">
-                        <label for="productImage">Image path or URL</label>
-                        <input type="text" id="productImage" placeholder="assets/cake1.jpeg">
+                        <label for="productMediaFile">Photo or short video (up to ~30s)</label>
+                        <div id="mediaPreviewWrap" class="admin-media-preview" hidden>
+                            <img id="mediaPreviewImage" alt="Current media preview" hidden>
+                            <video id="mediaPreviewVideo" muted loop playsinline hidden></video>
+                        </div>
+                        <input type="file" id="productMediaFile" accept="image/*,video/*">
+                        <p id="mediaUploadStatus" class="admin-media-status"></p>
+                        <input type="text" id="productImage" placeholder="Or paste an image/video URL directly">
                     </div>
                     <div class="form-group">
                         <label for="productDescription">Description (optional)</label>

@@ -82,3 +82,33 @@ insert into products (id, name, price, image) values
   ('12', 'Fresh Fruit Tart', 25000, 'assets/cake14.jpeg'),
   ('13', 'Soft Love Combo', 100000, 'assets/boquet4.jpeg')
 on conflict (id) do nothing;
+
+-- Media support (photos or short video clips per product).
+-- See media-upgrade.sql for the version of this that was shipped separately
+-- for sites that had already run the section above.
+alter table products add column if not exists media_type text not null default 'image';
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'products_media_type_check'
+  ) then
+    alter table products
+      add constraint products_media_type_check check (media_type in ('image', 'video'));
+  end if;
+end $$;
+
+insert into storage.buckets (id, name, public)
+values ('product-media', 'product-media', true)
+on conflict (id) do update set public = true;
+
+drop policy if exists "Public can view product media" on storage.objects;
+create policy "Public can view product media"
+  on storage.objects for select
+  using (bucket_id = 'product-media');
+
+drop policy if exists "Authenticated users manage product media" on storage.objects;
+create policy "Authenticated users manage product media"
+  on storage.objects for all
+  using (bucket_id = 'product-media' and auth.role() = 'authenticated')
+  with check (bucket_id = 'product-media' and auth.role() = 'authenticated');

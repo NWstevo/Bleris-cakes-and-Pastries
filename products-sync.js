@@ -2,7 +2,7 @@
 //
 // Reads product data from Supabase (if supabase-config.js has been filled in)
 // and applies it on top of the catalogue already written in index.html:
-//   - existing items get their price/name/image updated in place
+//   - existing items get their price/name/photo-or-video updated in place
 //   - items the admin removed are hidden
 //   - items the admin added (that don't exist in the static HTML) are
 //     appended to the catalogue as new cards
@@ -19,6 +19,8 @@
         '101', '102', '103', '104', '106', '108', '109', '110', '111', '112', '113', '114', '115', '116', '117',
         '1', '2', '3', '4', '5', '6', '8', '9', '10', '11', '12', '13'
     ];
+
+    var prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     function formatMoney(n) {
         var value = Number(n) || 0;
@@ -42,17 +44,65 @@
         if (card) card.style.display = 'none';
     }
 
+    // .product-image is the positioned wrapper in the "product-card" template;
+    // the plain "catalogue-shot" figure is already positioned itself, so it
+    // doubles as its own media container.
+    function getMediaContainer(card) {
+        return card.querySelector('.product-image') || card;
+    }
+
+    function setVideoBadge(container, show) {
+        var existing = container.querySelector('.product-image-video-badge');
+        if (show && !existing) {
+            var badge = document.createElement('span');
+            badge.className = 'product-image-video-badge';
+            badge.textContent = '▶ Video';
+            container.appendChild(badge);
+        } else if (!show && existing) {
+            existing.remove();
+        }
+    }
+
+    // Swaps the element for an <img>/<video> of the right kind if the
+    // current one doesn't match, preserving its position in the DOM.
+    function ensureMediaElement(mediaEl, mediaType) {
+        var wantVideo = mediaType === 'video';
+        var isVideo = mediaEl.tagName === 'VIDEO';
+        if (wantVideo === isVideo) return mediaEl;
+
+        var replacement = document.createElement(wantVideo ? 'video' : 'img');
+        if (wantVideo) {
+            replacement.muted = true;
+            replacement.loop = true;
+            replacement.playsInline = true;
+            replacement.preload = 'metadata';
+            if (!prefersReducedMotion) replacement.autoplay = true;
+        } else {
+            replacement.loading = 'lazy';
+        }
+        mediaEl.replaceWith(replacement);
+        return replacement;
+    }
+
     function applyRowToCard(card, btn, row) {
         card.style.display = '';
         var priceEl = card.querySelector('.product-price');
         var titleEl = card.querySelector('.product-title, .catalogue-shot-title');
-        var imgEl = card.querySelector('img');
+        var mediaEl = card.querySelector('img, video');
+        var isVideo = row.media_type === 'video';
 
         if (priceEl) priceEl.textContent = formatMoney(row.price);
         if (titleEl && row.name) titleEl.textContent = row.name;
-        if (imgEl && row.image) {
-            imgEl.src = row.image;
-            imgEl.alt = row.name || imgEl.alt;
+
+        if (mediaEl && row.image) {
+            mediaEl = ensureMediaElement(mediaEl, row.media_type);
+            mediaEl.src = row.image;
+            if (mediaEl.tagName === 'IMG') {
+                mediaEl.alt = row.name || mediaEl.alt;
+            } else if (!prefersReducedMotion) {
+                mediaEl.play().catch(function () {});
+            }
+            setVideoBadge(getMediaContainer(card), isVideo);
         }
 
         btn.setAttribute('data-price', row.price);
@@ -68,13 +118,19 @@
     function buildNewCard(row) {
         var card = document.createElement('div');
         card.className = 'product-card set2 admin-added-product';
+        var isVideo = row.media_type === 'video';
+
+        var mediaMarkup = isVideo
+            ? '<video src="' + escapeHtml(row.image || '') + '" muted loop playsinline preload="metadata"' + (prefersReducedMotion ? '' : ' autoplay') + '></video>' +
+              '<span class="product-image-video-badge">▶ Video</span>'
+            : '<img src="' + escapeHtml(row.image || '') + '" alt="' + escapeHtml(row.name) + '" loading="lazy">';
 
         var descriptionMarkup = row.description
             ? '<p class="product-copy">' + escapeHtml(row.description) + '</p>'
             : '';
 
         card.innerHTML =
-            '<div class="product-image"><img src="' + escapeHtml(row.image || '') + '" alt="' + escapeHtml(row.name) + '" loading="lazy"></div>' +
+            '<div class="product-image">' + mediaMarkup + '</div>' +
             '<div class="product-info">' +
                 '<h3 class="product-title">' + escapeHtml(row.name) + '</h3>' +
                 descriptionMarkup +

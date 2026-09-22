@@ -127,6 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </button>
             <div class="lightbox-viewport">
                 <img src="" alt="">
+                <video class="lightbox-video" controls playsinline style="display: none;"></video>
             </div>
             <div class="lightbox-toolbar">
                 <button class="lightbox-control lightbox-display" type="button" aria-label="View full image">View</button>
@@ -135,17 +136,32 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.appendChild(lightbox);
 
         const lightboxImage = lightbox.querySelector('img');
+        const lightboxVideo = lightbox.querySelector('.lightbox-video');
 
         function closeLightbox() {
             lightbox.classList.remove('is-open');
             lightboxImage.src = '';
             lightboxImage.alt = '';
+            lightboxImage.style.display = '';
+            lightboxVideo.pause();
+            lightboxVideo.removeAttribute('src');
+            lightboxVideo.load();
+            lightboxVideo.style.display = 'none';
             document.body.style.overflow = '';
         }
 
-        function openLightbox(src, alt) {
-            lightboxImage.src = src;
-            lightboxImage.alt = alt;
+        function openLightbox(src, alt, isVideo) {
+            if (isVideo) {
+                lightboxImage.style.display = 'none';
+                lightboxVideo.style.display = '';
+                lightboxVideo.src = src;
+                lightboxVideo.play().catch(() => {});
+            } else {
+                lightboxVideo.style.display = 'none';
+                lightboxImage.style.display = '';
+                lightboxImage.src = src;
+                lightboxImage.alt = alt;
+            }
             lightbox.classList.add('is-open');
             document.body.style.overflow = 'hidden';
         }
@@ -153,6 +169,12 @@ document.addEventListener("DOMContentLoaded", () => {
         lightbox.addEventListener('click', (e) => {
             if (e.target.closest('.lightbox-close')) {
                 closeLightbox();
+                return;
+            }
+
+            // Let native video controls (play/pause/seek/volume) work without
+            // the click bubbling up and closing the lightbox.
+            if (e.target.closest('.lightbox-video')) {
                 return;
             }
 
@@ -186,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
             cards.forEach(card => {
                 const productInfo = card.querySelector('.product-info');
                 const productTitle = card.querySelector('.product-title');
-                const productImage = card.querySelector('.product-image img');
+                const productImage = card.querySelector('.product-image img, .product-image video');
 
                 if (!productInfo || !productTitle || !productImage) return;
 
@@ -220,43 +242,38 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
 
-        cards.forEach(card => {
-            card.addEventListener('click', (e) => {
-                const toggleButton = e.target.closest('.mobile-card-toggle');
-                if (toggleButton) {
-                    e.preventDefault();
-                    const shouldExpand = !card.classList.contains('is-expanded');
-                    cards.forEach(otherCard => {
-                        if (otherCard !== card) {
-                            otherCard.classList.remove('is-expanded');
-                        }
-                    });
-                    card.classList.toggle('is-expanded', shouldExpand);
-                    syncMobileCardState();
-                    if (shouldExpand) {
-                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }
-                    return;
-                }
+        // Delegated so it keeps working for cards added later (e.g. by the
+        // admin panel), not just the ones present when the page first loaded.
+        document.addEventListener('click', (e) => {
+            const card = e.target.closest('.product-card');
+            if (!card) return;
 
-                const zoomButton = e.target.closest('.product-image-zoom');
-                if (zoomButton) {
-                    e.preventDefault();
-                    const image = card.querySelector('.product-image img');
-                    if (image) {
-                        openLightbox(image.src, image.alt);
+            const toggleButton = e.target.closest('.mobile-card-toggle');
+            if (toggleButton) {
+                e.preventDefault();
+                const shouldExpand = !card.classList.contains('is-expanded');
+                document.querySelectorAll('.product-card').forEach(otherCard => {
+                    if (otherCard !== card) {
+                        otherCard.classList.remove('is-expanded');
                     }
-                    return;
+                });
+                card.classList.toggle('is-expanded', shouldExpand);
+                syncMobileCardState();
+                if (shouldExpand) {
+                    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }
+                return;
+            }
 
-                const clickedProductImage = e.target.closest('.product-image');
-                if (clickedProductImage) {
-                    const image = card.querySelector('.product-image img');
-                    if (image) {
-                        openLightbox(image.src, image.alt);
-                    }
+            const zoomButton = e.target.closest('.product-image-zoom');
+            const clickedProductImage = e.target.closest('.product-image');
+            if (zoomButton || clickedProductImage) {
+                e.preventDefault();
+                const media = card.querySelector('.product-image img, .product-image video');
+                if (media) {
+                    openLightbox(media.currentSrc || media.src, media.alt, media.tagName === 'VIDEO');
                 }
-            });
+            }
         });
 
         if (typeof mobileCardsQuery.addEventListener === 'function') {
@@ -273,8 +290,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!shots.length) return;
 
         shots.forEach(shot => {
-            const image = shot.querySelector('img');
-            if (!image) return;
+            const media = shot.querySelector('img, video');
+            if (!media) return;
+            const isVideo = media.tagName === 'VIDEO';
+            const openMedia = () => openLightbox(media.currentSrc || media.src, media.alt, isVideo);
 
             shot.addEventListener('mouseenter', () => {
                 shot.classList.add('is-active');
@@ -295,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
             shot.addEventListener('click', (e) => {
                 const displayButton = e.target.closest('.product-image-zoom');
                 if (displayButton) {
-                    openLightbox(image.src, image.alt);
+                    openMedia();
                     return;
                 }
 
@@ -303,13 +322,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (interactiveTarget) {
                     return;
                 }
-                openLightbox(image.src, image.alt);
+                openMedia();
             });
 
             shot.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
-                    openLightbox(image.src, image.alt);
+                    openMedia();
                 }
             });
         });
