@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Login | Bleris Cakes and Pastries</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+    <nav>
+        <div class="container nav-shell">
+            <a href="index.html" class="logo">
+                <span class="logo-mark">B</span>
+                <span class="logo-text">
+                    <strong>Bleris</strong>
+                    <span>Staff Panel</span>
+                </span>
+            </a>
+            <a href="index.html" class="btn btn-secondary admin-back-link">Back to site</a>
+        </div>
+    </nav>
+
+    <main class="admin-main">
+        <div class="container admin-container">
+
+            <div id="setupNotice" class="admin-card" hidden>
+                <h1>Connect the database first</h1>
+                <p>This admin panel isn't connected to Supabase yet, so there's nothing to log in to.</p>
+                <ol>
+                    <li>Create a free project at <a href="https://supabase.com" target="_blank" rel="noreferrer">supabase.com</a>.</li>
+                    <li>Open the SQL Editor and run the script in <code>supabase/setup.sql</code> from this project.</li>
+                    <li>In Project Settings &rarr; API, copy the Project URL and the <code>anon public</code> key.</li>
+                    <li>Paste both into <code>supabase-config.js</code> and redeploy the site.</li>
+                    <li>In Supabase, go to Authentication &rarr; Users and add yourself with an email and password &mdash; that's your staff login.</li>
+                </ol>
+            </div>
+
+            <div id="authSection" class="admin-card" hidden>
+                <h1>Staff login</h1>
+                <p class="admin-subtitle">Sign in to manage products and prices.</p>
+                <form id="loginForm" class="admin-form" novalidate>
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" name="email" required autocomplete="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" name="password" required autocomplete="current-password">
+                    </div>
+                    <p id="authError" class="admin-error" role="alert"></p>
+                    <button type="submit" id="loginSubmit" class="btn">Sign in</button>
+                </form>
+            </div>
+
+            <div id="dashboardSection" class="admin-card admin-dashboard" hidden>
+                <div class="admin-dashboard-header">
+                    <div>
+                        <h1>Product catalogue</h1>
+                        <p class="admin-subtitle">Select an item to edit or remove, or add a new one.</p>
+                    </div>
+                    <div class="admin-dashboard-actions">
+                        <button type="button" id="addNewBtn" class="btn">Add new item</button>
+                        <button type="button" id="logoutBtn" class="btn btn-secondary">Log out</button>
+                    </div>
+                </div>
+
+                <form id="productForm" class="admin-form admin-product-form" hidden>
+                    <h2 id="formTitle">Add new item</h2>
+                    <input type="hidden" id="productId">
+                    <div class="form-group">
+                        <label for="productName">Name</label>
+                        <input type="text" id="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productPrice">Price (FCFA)</label>
+                        <input type="number" id="productPrice" min="0" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage">Image path or URL</label>
+                        <input type="text" id="productImage" placeholder="assets/cake1.jpeg">
+                    </div>
+                    <div class="form-group">
+                        <label for="productDescription">Description (optional)</label>
+                        <textarea id="productDescription" rows="2"></textarea>
+                    </div>
+                    <p id="formError" class="admin-error" role="alert"></p>
+                    <div class="admin-form-actions">
+                        <button type="submit" id="saveProductBtn" class="btn">Add item</button>
+                        <button type="button" id="cancelFormBtn" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+
+                <div id="productList" class="admin-product-list">
+                    <p class="admin-loading">Loading products&hellip;</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="supabase-config.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="admin.js" defer></script>
+</body>
+
+</html>

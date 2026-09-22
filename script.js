@@ -393,18 +393,20 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCart();
     }
 
-    // Add to cart functionality
-    const addToCartButtons = document.querySelectorAll('.btn-add-to-cart');
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const id = button.getAttribute('data-id');
-            const name = button.getAttribute('data-name');
-            const price = parseFloat(button.getAttribute('data-price'));
-            const image = button.getAttribute('data-image');
-            const quantity = parseInt(button.parentElement.querySelector('.quantity-select').value, 10);
-            addItemToCart({ id, name, price, image, quantity });
-            alert(`${quantity} ${name}(s) added to cart!`);
-        });
+    // Add to cart functionality — delegated so products added later
+    // (e.g. by the admin panel) work without any extra wiring.
+    document.addEventListener('click', (e) => {
+        const button = e.target.closest && e.target.closest('.btn-add-to-cart');
+        if (!button) return;
+
+        const id = button.getAttribute('data-id');
+        const name = button.getAttribute('data-name');
+        const price = parseFloat(button.getAttribute('data-price'));
+        const image = button.getAttribute('data-image');
+        const quantitySelect = button.parentElement ? button.parentElement.querySelector('.quantity-select') : null;
+        const quantity = quantitySelect ? parseInt(quantitySelect.value, 10) : 1;
+        addItemToCart({ id, name, price, image, quantity });
+        alert(`${quantity} ${name}(s) added to cart!`);
     });
 
     if (addSelectedServicesBtn) {
